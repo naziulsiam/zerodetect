@@ -1,338 +1,152 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- SEO Meta Tags -->
-    <title>ZeroDetect - AI Text Detection Tool | Ali Siam</title>
-    <meta name="description" content="Offline AI text detection tool using advanced entropy analysis, burstiness metrics, and n-gram profiling. Privacy-first, real-time results. Built by Ali Siam.">
-    <meta name="keywords" content="AI detector, text analysis, GPT detector, ChatGPT detector, offline tool, entropy analysis">
-    <meta name="author" content="Ali Siam">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="ZeroDetect - AI Text Detection Tool">
-    <meta property="og:description" content="Privacy-first AI text detection using advanced linguistic analysis.">
-    <meta property="og:type" content="website">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
-    
-    <!-- Tailwind CSS CDN -->
+    <title>ZeroDetect - AI Text Detection</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <style>
-        /* Custom Cyber Theme */
-        :root {
-            --cyber-blue: #00f3ff;
-            --cyber-purple: #bd00ff;
-            --cyber-pink: #ff006e;
-            --cyber-green: #00ff88;
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
         }
-        
-        /* Animated Grid Background */
-        .cyber-grid {
-            background-image: 
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
+        .progress-bar-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
-        @keyframes gridMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 50px 50px; }
+        textarea {
+            resize: vertical;
         }
-        
-        /* Glow Effects */
-        .glow-cyan {
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        .glow {
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
         }
-        
-        .glow-green {
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
-        }
-        
-        .glow-red {
-            box-shadow: 0 0 20px rgba(255, 84, 89, 0.3);
-        }
-        
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #00f3ff 0%, #bd00ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Pulse Animation */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        .pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        /* Loading Spinner */
-        .spinner {
-            border: 3px solid rgba(0, 243, 255, 0.2);
-            border-top-color: #00f3ff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 0.6s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Card Hover */
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        
         .card-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
-        }
-        
-        /* Progress Bar Animation */
-        .progress-bar-fill {
-            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.2);
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-gray-100 cyber-grid min-h-screen">
+<body class="text-white">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                🔍 ZeroDetect
+            </h1>
+            <p class="text-slate-400 text-lg">In-Browser AI Text Detection Engine</p>
+        </header>
 
-    <!-- Header -->
-    <header class="border-b border-cyan-500/20 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="text-3xl" aria-hidden="true">🔍</div>
-                    <div>
-                        <h1 class="text-2xl font-bold gradient-text">ZeroDetect</h1>
-                        <p class="text-xs text-gray-400">AI Text Detection Tool</p>
-                    </div>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                    <span class="hidden sm:inline-flex items-center gap-2 text-sm text-cyan-400">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                        </svg>
-                        100% Offline
-                    </span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-        
-        <!-- Hero Section -->
-        <div class="text-center mb-12">
-            <div class="inline-block bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-lg px-4 py-2 mb-6">
-                <p class="text-sm text-cyan-400">
-                    🔒 Privacy-First • Offline Analysis • Real-Time Results
-                </p>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">
-                Detect <span class="gradient-text">AI-Generated</span> Text Instantly
-            </h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">
-                Advanced linguistic analysis using entropy calculation, burstiness metrics, and n-gram profiling. 
-                Your text never leaves your browser.
-            </p>
-        </div>
-
-        <!-- Analysis Grid -->
-        <div class="grid lg:grid-cols-2 gap-8">
-            
+        <!-- Main Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Input Section -->
             <div class="space-y-6">
-                <!-- Text Input Card -->
-                <div class="bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-cyan-500/20 card-hover">
-                    <label class="block text-sm font-semibold text-cyan-400 mb-3">
-                        📝 Paste Text to Analyze
-                    </label>
-                    <textarea 
-                        id="textInput"
-                        class="w-full bg-slate-800/50 border border-cyan-500/30 rounded-lg px-4 py-3 text-gray-300 placeholder-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 transition min-h-[300px] resize-vertical"
-                        placeholder="Enter or paste the text you want to analyze here.&#10;&#10;Minimum 50 characters required for accurate detection."
-                    ></textarea>
-                    
-                    <div class="flex items-center justify-between mt-3">
-                        <span class="text-xs text-gray-500">
-                            <span id="charCount" class="text-cyan-400 font-mono">0</span> characters
-                        </span>
-                        <span class="text-xs text-gray-500">
-                            Min: 50 characters
-                        </span>
+                <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 card-hover transition-all duration-300">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span>📝</span> Input
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-slate-400 mb-2">Paste text to analyze</label>
+                            <textarea 
+                                id="textInput"
+                                class="w-full h-64 bg-slate-900/80 border border-slate-600 rounded-lg p-4 text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
+                                placeholder="Enter at least 50 characters of text to analyze..."
+                            ></textarea>
+                            <div class="flex justify-between items-center mt-2">
+                                <span id="charCount" class="text-xs text-slate-500">0 characters</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Error Message -->
+                        <div id="errorMessage" class="hidden bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg text-sm">
+                        </div>
+
+                        <button 
+                            id="analyzeBtn"
+                            class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 glow"
+                        >
+                            <span id="btnText">Analyze Text</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Error Message -->
-                <div id="errorMessage" class="hidden bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-red-400 text-sm">
-                    <!-- Error text injected here -->
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex gap-4">
-                    <button 
-                        onclick="analyzeText()"
-                        id="analyzeBtn"
-                        class="flex-1 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-slate-900 font-bold py-3 px-6 rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        <span id="btnText">⚡ Analyze Text</span>
-                    </button>
-                    <button 
-                        onclick="clearText()"
-                        class="bg-slate-800 hover:bg-slate-700 border border-cyan-500/30 text-gray-300 font-semibold py-3 px-6 rounded-lg transition-all duration-300"
-                    >
-                        🗑️ Clear
-                    </button>
-                </div>
-
-                <!-- Features List -->
-                <div class="bg-slate-900/30 rounded-xl p-5 border border-cyan-500/10">
-                    <h3 class="text-sm font-bold text-cyan-400 mb-3">🔬 Detection Methods</h3>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li class="flex items-start gap-2">
-                            <span class="text-cyan-400 mt-0.5">▹</span>
-                            <span><strong class="text-gray-300">Entropy Analysis (45%)</strong> - Measures text predictability</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-cyan-400 mt-0.5">▹</span>
-                            <span><strong class="text-gray-300">Burstiness Scoring (30%)</strong> - Detects sentence variation patterns</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-cyan-400 mt-0.5">▹</span>
-                            <span><strong class="text-gray-300">N-gram Profiling (15%)</strong> - Identifies AI model fingerprints</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-cyan-400 mt-0.5">▹</span>
-                            <span><strong class="text-gray-300">Semantic Analysis (10%)</strong> - Checks structural consistency</span>
-                        </li>
-                    </ul>
+                <!-- Features -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700 text-center">
+                        <div class="text-2xl mb-2">🔒</div>
+                        <h3 class="font-semibold text-sm mb-1">100% Private</h3>
+                        <p class="text-xs text-slate-400">All analysis happens in your browser. Your text never leaves your device.</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700 text-center">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <h3 class="font-semibold text-sm mb-1">Real-Time</h3>
+                        <p class="text-xs text-slate-400">Instant results using advanced linguistic analysis algorithms.</p>
+                    </div>
+                    <div class="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700 text-center">
+                        <div class="text-2xl mb-2">🎯</div>
+                        <h3 class="font-semibold text-sm mb-1">90-95% Accurate</h3>
+                        <p class="text-xs text-slate-400">Multi-method detection using entropy, burstiness, and n-gram analysis.</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Results Section -->
+            <!-- Result Section -->
             <div class="space-y-6">
-                
-                <!-- Empty State -->
-                <div id="emptyState" class="bg-slate-900/30 rounded-xl p-12 border border-cyan-500/10 text-center">
-                    <div class="text-6xl mb-4 opacity-50">✨</div>
-                    <h3 class="text-xl font-semibold text-gray-300 mb-2">Ready to Analyze</h3>
-                    <p class="text-gray-500">Paste your text and click "Analyze" to begin detection</p>
-                </div>
+                <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700 card-hover transition-all duration-300">
+                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span>📊</span> Result
+                    </h2>
 
-                <!-- Result Card (Hidden Initially) -->
-                <div id="resultCard" class="hidden space-y-6">
-                    
-                    <!-- Main Score Display -->
-                    <div class="bg-slate-900/50 backdrop-blur-sm rounded-xl p-6 border border-cyan-500/20 card-hover">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <div class="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-2">
-                                    AI Probability Score
-                                </div>
-                                <div id="scorePercentage" class="text-5xl font-bold gradient-text">
-                                    0%
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <div id="classificationBadge" class="inline-block px-4 py-2 rounded-lg text-sm font-bold">
-                                    <!-- Badge injected here -->
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div class="mb-6">
-                            <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
-                                <div id="progressFill" class="h-full progress-bar-fill bg-gradient-to-r" style="width: 0%"></div>
-                            </div>
-                            <div class="flex justify-between mt-2 text-xs text-gray-500">
-                                <span>👤 Human-like</span>
-                                <span>🤖 AI-like</span>
-                            </div>
-                        </div>
-
-                        <!-- Confidence Display -->
-                        <div id="confidenceBox" class="bg-cyan-500/10 border-l-4 border-cyan-500 rounded p-4 text-sm">
-                            <!-- Confidence text injected here -->
-                        </div>
+                    <!-- Empty State -->
+                    <div id="emptyState" class="text-center py-12">
+                        <div class="text-6xl mb-4">🤖</div>
+                        <h3 class="text-xl font-semibold mb-2 text-slate-300">Detection Outcome</h3>
+                        <p class="text-slate-500">Enter text to analyze.</p>
                     </div>
 
-                    <!-- Metrics Grid -->
-                    <div class="bg-slate-900/50 rounded-xl p-6 border border-cyan-500/20 card-hover">
-                        <h3 class="text-sm font-bold text-cyan-400 mb-4">📊 Detection Metrics</h3>
+                    <!-- Result Card -->
+                    <div id="resultCard" class="hidden space-y-6">
+                        <!-- Score Display -->
+                        <div class="text-center">
+                            <div class="text-6xl font-bold mb-2" id="scorePercentage">0%</div>
+                            <div class="w-full h-4 bg-slate-900 rounded-full overflow-hidden mb-4">
+                                <div id="progressFill" class="h-full progress-bar-fill bg-gradient-to-r from-emerald-400 via-cyan-500 to-cyan-600 shadow-lg" style="width: 0%"></div>
+                            </div>
+                            <div id="classificationBadge" class="inline-block px-4 py-2 rounded-lg text-sm font-bold">
+                                ✅ Definitely Human
+                            </div>
+                        </div>
+
+                        <!-- Confidence Box -->
+                        <div id="confidenceBox" class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                            <p class="text-lg font-semibold">Confidence: High</p>
+                            <p class="text-sm text-slate-400">0% AI-generated • 100% Human-written</p>
+                        </div>
+
+                        <!-- Key Metrics -->
                         <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-slate-800/50 rounded-lg p-4">
-                                <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Burstiness</div>
-                                <div id="burstinessValue" class="text-2xl font-bold text-gray-200">0.00</div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">Burstiness</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="burstinessValue">0.000</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-lg p-4">
-                                <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Perplexity</div>
-                                <div id="perplexityValue" class="text-2xl font-bold text-gray-200">0.00</div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">Perplexity</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="perplexityValue">0.000</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-lg p-4">
-                                <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">Semantic</div>
-                                <div id="semanticValue" class="text-2xl font-bold text-gray-200">0%</div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">Semantic Flow</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="semanticValue">0%</div>
                             </div>
-                            <div class="bg-slate-800/50 rounded-lg p-4">
-                                <div class="text-xs text-gray-400 uppercase tracking-wide mb-1">N-gram</div>
-                                <div id="ngramValue" class="text-2xl font-bold text-gray-200">0%</div>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">N-gram</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="ngramValue">0%</div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Detailed Analysis -->
-                    <div id="analysisDetails" class="bg-slate-900/50 rounded-xl p-6 border border-cyan-500/20 card-hover">
-                        <h3 class="text-sm font-bold text-cyan-400 mb-4">📄 Text Statistics</h3>
-                        <div class="space-y-3 text-sm">
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Character Count</span>
-                                <span id="detailChars" class="font-mono text-gray-200">0</span>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">Lexical Richness</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="lexicalValue">0%</div>
                             </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Word Count</span>
-                                <span id="detailWords" class="font-mono text-gray-200">0</span>
-                            </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Unique Words</span>
-                                <span id="detailUnique" class="font-mono text-gray-200">0</span>
-                            </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Avg Word Length</span>
-                                <span id="detailAvgWordLen" class="font-mono text-gray-200">0</span>
-                            </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Avg Sentence Length</span>
-                                <span id="detailAvgSentenceLen" class="font-mono text-gray-200">0</span>
-                            </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Punctuation Diversity</span>
-                                <span id="detailPunctuation" class="font-mono text-gray-200">0</span>
-                            </div>
-                            <div class="flex justify-between pb-2 border-b border-slate-700">
-                                <span class="text-gray-400">Semantic Coherence</span>
-                                <span id="detailSemantic" class="font-mono text-gray-200">0.00</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">N-gram Entropy</span>
-                                <span id="detailNgram" class="font-mono text-gray-200">0.00</span>
+                            <div class="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
+                                <div class="text-xs text-slate-400 mb-1">Repetition</div>
+                                <div class="text-2xl font-mono text-cyan-400" id="repetitionValue">0%</div>
                             </div>
                         </div>
                     </div>
@@ -340,48 +154,81 @@
             </div>
         </div>
 
-        <!-- Info Section -->
-        <div class="mt-12 grid md:grid-cols-3 gap-6">
-            <div class="bg-slate-900/30 rounded-xl p-6 border border-cyan-500/10">
-                <div class="text-3xl mb-3">🔒</div>
-                <h3 class="text-lg font-bold text-cyan-400 mb-2">100% Private</h3>
-                <p class="text-sm text-gray-400">All analysis happens in your browser. Your text never leaves your device.</p>
+        <!-- Detailed Analysis -->
+        <div id="detailedAnalysis" class="mt-8 hidden">
+            <div class="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <span>🔦</span> Signal Strength
+                    <span class="text-sm font-normal text-slate-400 ml-2">Weighted evidence</span>
+                </h2>
+                <div id="signalList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                </div>
             </div>
-            <div class="bg-slate-900/30 rounded-xl p-6 border border-cyan-500/10">
-                <div class="text-3xl mb-3">⚡</div>
-                <h3 class="text-lg font-bold text-cyan-400 mb-2">Real-Time</h3>
-                <p class="text-sm text-gray-400">Instant results using advanced linguistic analysis algorithms.</p>
-            </div>
-            <div class="bg-slate-900/30 rounded-xl p-6 border border-cyan-500/10">
-                <div class="text-3xl mb-3">🎯</div>
-                <h3 class="text-lg font-bold text-cyan-400 mb-2">90-95% Accurate</h3>
-                <p class="text-sm text-gray-400">Multi-method detection using entropy, burstiness, and n-gram analysis.</p>
-            </div>
-        </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="border-t border-cyan-500/20 bg-slate-950/90 mt-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="text-center">
-                <p class="text-gray-400 mb-2">
-                    Built with 🔐 by <a href="https://github.com/naziulsiam" target="_blank" rel="noopener noreferrer" class="text-cyan-400 hover:text-cyan-300 font-semibold">Ali Siam</a>
-                </p>
-                <p class="text-sm text-gray-500">
-                    © 2025 ZeroDetect. Open-source AI detection tool.
-                </p>
-                <div class="mt-4 flex justify-center gap-4">
-                    <a href="https://github.com/naziulsiam/zerodetect" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-cyan-400 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
+            <!-- Text Statistics -->
+            <div class="mt-8 bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <span>📄</span> Text Statistics
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Characters</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailChars">0</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Words</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailWords">0</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Unique Words</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailUnique">0</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Avg Word Length</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailAvgWordLen">0.00</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Avg Sentence Length</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailAvgSentenceLen">0.00</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Punctuation Diversity</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailPunctuation">0.000</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Semantic Score</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailSemantic">0.00</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">N-gram Score</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailNgram">0.000</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Lexical Score</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailLexical">0.000</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Repetition Score</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailRepetition">0.000</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Reading Ease</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailReadingEase">0.00</div>
+                    </div>
+                    <div class="bg-slate-900/50 rounded-lg p-3 border border-slate-700">
+                        <div class="text-xs text-slate-400 mb-1">Stopword Ratio</div>
+                        <div class="text-lg font-mono text-cyan-400" id="detailStopwords">0.000</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
 
-    <!-- External JavaScript -->
+        <!-- Footer -->
+        <footer class="text-center mt-12 text-slate-500 text-sm">
+            <p>Built by <a href="https://github.com/naziulsiam" class="text-cyan-400 hover:text-cyan-300">Ali Siam</a> • Open Source • 100% Client-Side</p>
+        </footer>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
